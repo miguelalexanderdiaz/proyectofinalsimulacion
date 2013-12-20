@@ -4,6 +4,7 @@
  */
 package proyectosimulacion;
 
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -16,6 +17,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
+import proyectosimulacion.problemaDardos.SimulacionDardos;
 import proyectosimulacion.problemaPuertas.SimulacionPuertas;
 
 /**
@@ -33,6 +35,9 @@ public class ProjectFrame extends JFrame {
 
         DefaultCaret caret = (DefaultCaret) logSimulation1.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        caret = (DefaultCaret) logSimulation2.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
 
     }
@@ -47,6 +52,7 @@ public class ProjectFrame extends JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         graphPanel1 = new javax.swing.JInternalFrame();
@@ -54,31 +60,40 @@ public class ProjectFrame extends JFrame {
         logSimulation1 = new javax.swing.JTextArea();
         beginSimulation1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        labelIter1 = new javax.swing.JLabel();
         iterationsSimulation1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        labelDelay1 = new javax.swing.JLabel();
         delaySimulation1 = new javax.swing.JTextField();
         cambiarPuertaRButton = new javax.swing.JRadioButton();
         noCambiarPuertaRButton = new javax.swing.JRadioButton();
         progressBar1 = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
+        graphAverage2 = new javax.swing.JInternalFrame();
+        graphProbability2 = new javax.swing.JInternalFrame();
+        simulateButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        logSimulation2 = new javax.swing.JTextArea();
+        juegoAleatorioRB = new javax.swing.JRadioButton();
+        jugadorBuenoRB = new javax.swing.JRadioButton();
+        jugadorMaloRB = new javax.swing.JRadioButton();
+        labelIter2 = new javax.swing.JLabel();
+        labelDelay2 = new javax.swing.JLabel();
+        iterationsSimulation2 = new javax.swing.JTextField();
+        delaySimulation2 = new javax.swing.JTextField();
+        progressBar2 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1024, 700));
+        setMinimumSize(new java.awt.Dimension(800, 600));
 
         jTabbedPane1.setAutoscrolls(true);
+        jTabbedPane1.setMaximumSize(new java.awt.Dimension(1020, 720));
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
+
+        jPanel2.setMaximumSize(new java.awt.Dimension(1024, 720));
+        jPanel2.setMinimumSize(new java.awt.Dimension(800, 600));
 
         graphPanel1.setVisible(true);
-
-        javax.swing.GroupLayout graphPanel1Layout = new javax.swing.GroupLayout(graphPanel1.getContentPane());
-        graphPanel1.getContentPane().setLayout(graphPanel1Layout);
-        graphPanel1Layout.setHorizontalGroup(
-            graphPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        graphPanel1Layout.setVerticalGroup(
-            graphPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
-        );
 
         logSimulation1.setColumns(20);
         logSimulation1.setRows(5);
@@ -91,7 +106,7 @@ public class ProjectFrame extends JFrame {
             }
         });
 
-        jLabel1.setText("Iteraciones");
+        labelIter1.setText("Iteraciones");
 
         iterationsSimulation1.setText("0");
         iterationsSimulation1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -100,7 +115,7 @@ public class ProjectFrame extends JFrame {
             }
         });
 
-        jLabel2.setText("Retardo (ms)");
+        labelDelay1.setText("Retardo (ms)");
 
         delaySimulation1.setText("0");
         delaySimulation1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -127,9 +142,9 @@ public class ProjectFrame extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelDelay1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                            .addComponent(labelIter1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(iterationsSimulation1, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
                             .addComponent(delaySimulation1)))
@@ -142,7 +157,7 @@ public class ProjectFrame extends JFrame {
             .addComponent(progressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {labelDelay1, labelIter1});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {delaySimulation1, iterationsSimulation1});
 
@@ -150,13 +165,13 @@ public class ProjectFrame extends JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(labelIter1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(iterationsSimulation1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(delaySimulation1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
+                            .addComponent(labelDelay1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cambiarPuertaRButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -166,7 +181,7 @@ public class ProjectFrame extends JFrame {
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel1, jLabel2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {labelDelay1, labelIter1});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {delaySimulation1, iterationsSimulation1});
 
@@ -174,49 +189,158 @@ public class ProjectFrame extends JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(beginSimulation1))
+            .addComponent(graphPanel1)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(graphPanel1)
-                        .addGap(12, 12, 12))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addComponent(beginSimulation1, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(graphPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(graphPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(beginSimulation1))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(beginSimulation1)))
+                .addContainerGap(362, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Simulación 3 puertas", jPanel2);
+
+        jPanel3.setMaximumSize(new java.awt.Dimension(1024, 700));
+        jPanel3.setMinimumSize(new java.awt.Dimension(800, 600));
+
+        graphAverage2.setVisible(true);
+
+        graphProbability2.setResizable(true);
+        graphProbability2.setAutoscrolls(true);
+        graphProbability2.setMaximumSize(new java.awt.Dimension(408, 311));
+        graphProbability2.setMinimumSize(new java.awt.Dimension(408, 311));
+        graphProbability2.setVisible(true);
+
+        simulateButton2.setText("Iniciar Simulación");
+        simulateButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                simulateButton2MouseClicked(evt);
+            }
+        });
+
+        logSimulation2.setColumns(20);
+        logSimulation2.setRows(5);
+        jScrollPane3.setViewportView(logSimulation2);
+
+        buttonGroup2.add(juegoAleatorioRB);
+        juegoAleatorioRB.setSelected(true);
+        juegoAleatorioRB.setText("Juego Aleatorio");
+
+        buttonGroup2.add(jugadorBuenoRB);
+        jugadorBuenoRB.setText("Jugador Bueno");
+
+        buttonGroup2.add(jugadorMaloRB);
+        jugadorMaloRB.setText("Jugador Malo");
+
+        labelIter2.setText("Iteraciones");
+
+        labelDelay2.setText("Retardo (ms)");
+
+        iterationsSimulation2.setText("0");
+        iterationsSimulation2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                iterationsSimulation2KeyReleased(evt);
+            }
+        });
+
+        delaySimulation2.setText("0");
+        delaySimulation2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                delaySimulation2KeyReleased(evt);
+            }
+        });
+
+        progressBar2.setStringPainted(true);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 805, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(juegoAleatorioRB)
+                    .addComponent(jugadorBuenoRB)
+                    .addComponent(jugadorMaloRB)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelIter2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelDelay2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(delaySimulation2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(iterationsSimulation2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(progressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                .addGap(460, 460, 460)
+                .addComponent(simulateButton2))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(graphProbability2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graphAverage2, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 688, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(graphProbability2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(graphAverage2))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(iterationsSimulation2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(delaySimulation2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelIter2)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(labelDelay2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(juegoAleatorioRB)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jugadorBuenoRB)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jugadorMaloRB)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(simulateButton2)
+                    .addComponent(progressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(364, Short.MAX_VALUE))
         );
+
+        try {
+            graphProbability2.setMaximum(true);
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
 
         jTabbedPane1.addTab("Simulación Tiro al Blanco", jPanel3);
 
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -270,6 +394,56 @@ public class ProjectFrame extends JFrame {
         }
     }//GEN-LAST:event_delaySimulation1KeyReleased
 
+    private void iterationsSimulation2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_iterationsSimulation2KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iterationsSimulation2KeyReleased
+
+    private void delaySimulation2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_delaySimulation2KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_delaySimulation2KeyReleased
+
+    private void simulateButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_simulateButton2MouseClicked
+         final SimulacionDardos d;
+        if(juegoAleatorioRB.isSelected()){
+            d= new SimulacionDardos(this, 0);
+        }
+        else if(jugadorBuenoRB.isSelected()){
+            d= new SimulacionDardos(this, 1);
+        }
+        else{
+            d= new SimulacionDardos(this, 2);
+        }
+        
+        
+      
+
+
+        Thread worker = new Thread() {
+            public void run() {
+                try {
+                    d.run();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        setProgressBar2(0);
+                       
+                      JOptionPane.showMessageDialog(null, "Simulación del problema de los dardos ha finalizado", "Info", JOptionPane.INFORMATION_MESSAGE);
+
+                    }
+                });
+            }
+        };
+        worker.start();
+        
+        
+        
+    }//GEN-LAST:event_simulateButton2MouseClicked
+  
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -327,23 +501,70 @@ public class ProjectFrame extends JFrame {
     
     }
     
+    public void setProgressBar2(int porcentaje){
+        this.progressBar2.setValue(porcentaje);
+    
+    }
+
+    public void setGraphProbability2(ChartPanel chartPanel) {
+        this.graphProbability2.setContentPane(chartPanel);
+    }
+    
+    public void setGrahpAverage2(ChartPanel chartPanel){
+        this.graphAverage2.setContentPane(chartPanel);
+    }
+    
+
+    public JTextField getDelaySimulation2() {
+        return delaySimulation2;
+    }
+
+    public JTextField getIterationsSimulation2() {
+        return iterationsSimulation2;
+    }
+    
+    public void setLogSimulation2(String str) {
+        this.logSimulation2.setText(str);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beginSimulation1;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JRadioButton cambiarPuertaRButton;
     private javax.swing.JTextField delaySimulation1;
+    private javax.swing.JTextField delaySimulation2;
+    private javax.swing.JInternalFrame graphAverage2;
     private javax.swing.JInternalFrame graphPanel1;
+    private javax.swing.JInternalFrame graphProbability2;
     private javax.swing.JTextField iterationsSimulation1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField iterationsSimulation2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JRadioButton juegoAleatorioRB;
+    private javax.swing.JRadioButton jugadorBuenoRB;
+    private javax.swing.JRadioButton jugadorMaloRB;
+    private javax.swing.JLabel labelDelay1;
+    private javax.swing.JLabel labelDelay2;
+    private javax.swing.JLabel labelIter1;
+    private javax.swing.JLabel labelIter2;
     private javax.swing.JTextArea logSimulation1;
+    private javax.swing.JTextArea logSimulation2;
     private javax.swing.JRadioButton noCambiarPuertaRButton;
     private javax.swing.JProgressBar progressBar1;
+    private javax.swing.JProgressBar progressBar2;
+    private javax.swing.JButton simulateButton2;
     // End of variables declaration//GEN-END:variables
 }
