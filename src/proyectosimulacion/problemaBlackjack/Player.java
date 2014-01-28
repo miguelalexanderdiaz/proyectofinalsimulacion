@@ -16,6 +16,9 @@ public class Player {
     private int money;
     private int type;
 
+    /**
+     * Constructor el cual inicia las variables money y type de la clase player
+     */
     public Player(int money, int type) {
         this.money = money;
         this.hand = new ArrayList<Card>();
