@@ -4,6 +4,7 @@
  */
 package proyectosimulacion.problemaDardos;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -193,11 +194,10 @@ public class SimulacionDardos extends Thread {
         
 
         ChartPanel chartPanel = new ChartPanel(chart);
+        
 
         chartPanel.setVisible(true);
         pf.setGraphProbability2(chartPanel);
-
-
 
     }
 

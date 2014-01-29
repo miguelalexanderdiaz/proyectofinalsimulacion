@@ -4,9 +4,12 @@
  */
 package proyectosimulacion.problemaBlackjack;
 
+import java.awt.Dimension;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -24,6 +27,8 @@ import proyectosimulacion.ProjectFrame;
  * @author Neos
  */
 public class Logic implements Runnable {
+    
+    int retraso;
 
     /**
      * Parametros de la clase
@@ -57,6 +62,7 @@ public class Logic implements Runnable {
         this.pj = pj;
         this.strategy = strategy;
         this.iterations = Integer.parseInt(pj.getIterationsSimulation3().getText());
+        this.retraso=Integer.parseInt(pj.getDelaySimulation3().getText());
     }
 
     @Override
@@ -70,6 +76,11 @@ public class Logic implements Runnable {
         int moneyBefore = 0;
         Scanner sc = new Scanner(System.in);
         for (int k = 0; k < iterations; k++) {
+            try {
+                Thread.sleep(retraso);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ProjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
             exit = 0;
             while (exit == 0) {
                 moneyAll = player1.getMoney();
@@ -459,10 +470,14 @@ public class Logic implements Runnable {
             plot.setStartAngle(290);
             plot.setDirection(Rotation.CLOCKWISE);
             plot.setForegroundAlpha(0.5f);
-
+            
+            
             ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(20, 20));
             chartPanel.setVisible(true);
+            
             pj.setGraphPanel31(chartPanel);
+            
         } else {
             DefaultPieDataset dataset = new DefaultPieDataset();
 
@@ -487,6 +502,7 @@ public class Logic implements Runnable {
             plot.setForegroundAlpha(0.5f);
 
             ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(20, 20));
             chartPanel.setVisible(true);
             pj.setGraphPanel34(chartPanel);
 
@@ -537,7 +553,7 @@ public class Logic implements Runnable {
 
 
         ChartPanel chartPanel = new ChartPanel(chart);
-
+        chartPanel.setPreferredSize(new Dimension(20, 20));
         chartPanel.setVisible(true);
         pj.setGraphPanel32(chartPanel);
 
@@ -565,6 +581,7 @@ public class Logic implements Runnable {
 
 
         ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(20, 20));
         chartPanel.setVisible(true);
         pj.setGraphPanel33(chartPanel);
 
