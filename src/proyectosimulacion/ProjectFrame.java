@@ -120,7 +120,7 @@ public class ProjectFrame extends JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 83, Short.MAX_VALUE)
+            .addGap(0, 114, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,17 +179,15 @@ public class ProjectFrame extends JFrame {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cambiarPuertaRButton)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel7Layout.createSequentialGroup()
-                                        .addComponent(labelIter1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(iterationsSimulation1, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
-                                    .addGroup(jPanel7Layout.createSequentialGroup()
-                                        .addComponent(labelDelay1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(delaySimulation1))
-                                    .addComponent(noCambiarPuertaRButton))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(labelIter1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(iterationsSimulation1, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(labelDelay1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(delaySimulation1))
+                            .addComponent(noCambiarPuertaRButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(200, 200, 200)
@@ -374,7 +372,7 @@ public class ProjectFrame extends JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(graphProbability2, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(graphAverage2, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -407,7 +405,7 @@ public class ProjectFrame extends JFrame {
 
         graphPanel31.setMaximumSize(new java.awt.Dimension(35, 32));
         graphPanel31.setVisible(true);
-        graphPanel31.getContentPane().setLayout(new java.awt.GridLayout());
+        graphPanel31.getContentPane().setLayout(new java.awt.GridLayout(1, 0));
         jPanel4.add(graphPanel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 0, 403, 270));
 
         graphPanel32.setVisible(true);
@@ -645,11 +643,11 @@ public class ProjectFrame extends JFrame {
     private void simulateButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_simulateButton3MouseClicked
         final Logic logic;
         if (dealerStrategy.isSelected()) {
-            logic = new Logic(this, 0);
+            logic = new Logic(this, 0,0);
         } else if (personalStrategy.isSelected()) {
-            logic = new Logic(this, 1);
+            logic = new Logic(this, 1,0);
         } else {
-            logic = new Logic(this, 2);
+            logic = new Logic(this, 2,1);
         }
 
 

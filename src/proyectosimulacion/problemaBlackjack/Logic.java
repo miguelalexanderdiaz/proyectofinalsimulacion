@@ -47,6 +47,8 @@ public class Logic implements Runnable {
     private ProjectFrame pj;
     private int iterations = 0;
     private int strategy = 0;
+    private int amount = 2000;
+    private int countEnable = 0;
     XYSeries series = null;
 
     /**
@@ -56,13 +58,18 @@ public class Logic implements Runnable {
      * la estrategia que usa el jugador
      * @param pj es el ProjectFrame para actualizar la GUI
      * @param strategy es la estrategia que el jugador va a usar (0,1,2)
+     * @param countEnable es el entero que decide si se habilita el conteo o no
      */
-    public Logic(ProjectFrame pj, int strategy) {
+    public Logic(ProjectFrame pj, int strategy, int countEnable) {
         this.iterations = iterations;
         this.pj = pj;
         this.strategy = strategy;
         this.iterations = Integer.parseInt(pj.getIterationsSimulation3().getText());
+
+        this.countEnable = countEnable;
+
         this.retraso=Integer.parseInt(pj.getDelaySimulation3().getText());
+
     }
 
     @Override
@@ -74,6 +81,8 @@ public class Logic implements Runnable {
         int totalPlayer = 0;
         int totalDealer = 0;
         int moneyBefore = 0;
+        ArrayList<Card> initialPlayerHand;
+        ArrayList<Card> initialDealerHand;
         Scanner sc = new Scanner(System.in);
         for (int k = 0; k < iterations; k++) {
             try {
@@ -94,17 +103,19 @@ public class Logic implements Runnable {
 
                     System.out.println("Initial Table: ");
                     printHand(player1, dealer, 0);
+                    initialPlayerHand = player1.getHand();
+                    initialDealerHand = player1.getHand();
 
-                    makeBet(player1);
 
-                    System.out.println("Initial Table uncovered");
+                    System.out.println("Initial Table uncovered (Still covered for player)");
                     printHand(player1, dealer, 1);
 
-                    totalPlayer = play(player1, this.strategy);
+                    totalPlayer = play(player1, dealer, this.strategy);
+                    makeBet(player1, amount);
                     if (totalPlayer > 21) {
                         totalDealer = Card.sumaCartas(dealer.getHand());
                     } else {
-                        totalDealer = play(dealer, 0);
+                        totalDealer = play(dealer, player1, 0);
                     }
                     System.out.println("Final Table: ");
                     printHand(player1, dealer, 1);
@@ -136,7 +147,9 @@ public class Logic implements Runnable {
                     this.log.append("Juegos Hasta el Momento: ").append(totalGames).append("\n");
                     this.log.append("Porcentaje Volado: ").append(((double) blowUpTimes / (double) totalGames) * 100).append("\n");
                     this.log.append("Porcentaje Wins: ").append(((double) playerWins / (double) totalGames) * 100).append("\n");
-                    this.log.append("Mano promedio: ").append(arrayAverage(handValues)).append("\n\n\n");
+                    if (handValues.size() > 0) {
+                        this.log.append("Mano promedio: ").append(arrayAverage(handValues)).append("\n\n\n");
+                    }
                     double percentaje = ((double) (k + 1) / (double) iterations) * 100;
                     pj.setLogSimulation3(log.toString());
                     pj.setProgressBar3((int) percentaje);
@@ -158,7 +171,9 @@ public class Logic implements Runnable {
         System.out.println("Dealer Wins: " + dealerWins);
         System.out.println("Draws: " + draws);
         System.out.println("Juegos Totales: " + totalGames);
-        System.out.println("Mano promedio: " + arrayAverage(handValues));
+        if (handValues.size() > 0) {
+            System.out.println("Mano promedio: " + arrayAverage(handValues));
+        }
         System.out.println("Porcentaje volado: " + ((double) blowUpTimes / (double) totalGames) * 100);
         System.out.println("Porcentaje Wins: " + ((double) playerWins / (double) totalGames) * 100);
     }
@@ -207,9 +222,9 @@ public class Logic implements Runnable {
      * @param player es el jugador que hace la apuesta
      * @return no devuelve nada
      */
-    public void makeBet(Player player) {
-        player.setMoney(player.getMoney() - 2000);
-        bet += 2000;
+    public void makeBet(Player player, int amount) {
+        player.setMoney(player.getMoney() - amount);
+        bet += amount;
         System.out.println("Bet´s Done");
         System.out.println("Pot: " + bet + "\n");
     }
@@ -225,14 +240,16 @@ public class Logic implements Runnable {
      * @return devuelve el valor de la suma de las cartas de la mano del
      * jugador, es decir, el total de su mano
      */
-    public int play(Player player, int strategy) {
+    public int play(Player player, Player player2, int strategy) {
         switch (strategy) {
             case 0:
+                this.amount = 2000;
                 int aces = 0;
                 int exit = 0;
                 int total = 0;
                 int extraCards = 0;
                 while (exit == 0) {
+                    aces = 0;
                     for (int i = 0; i < player.getHand().size(); i++) {
                         Card card = player.getHand().get(i);
                         if (card.getValue() == 1) {
@@ -242,6 +259,7 @@ public class Logic implements Runnable {
                     total = Card.sumaCartas(player.getHand());
                     if (extraCards == 0 && (total + 10) == 21 && aces > 0) {
                         bj = 1;
+                        return 21;
                     }
                     if (total >= 17) {
                         exit = 1;
@@ -261,12 +279,13 @@ public class Logic implements Runnable {
 
                 break;
             case 1:
-
+                Card uncoveredCard = player2.getHand().get(1);
                 aces = 0;
                 exit = 0;
                 total = 0;
                 extraCards = 0;
                 while (exit == 0) {
+                    aces = 0;
                     for (int i = 0; i < player.getHand().size(); i++) {
                         Card card = player.getHand().get(i);
                         if (card.getValue() == 1) {
@@ -276,30 +295,63 @@ public class Logic implements Runnable {
                     total = Card.sumaCartas(player.getHand());
                     if (extraCards == 0 && (total + 10) == 21 && aces > 0) {
                         bj = 1;
+                        return 21;
                     }
-                    if (total >= 16) {
-                        exit = 1;
 
-                        return total;
-                    }
-                    if (aces > 0) {
-                        if ((total + 10) >= 16 && (total + 10) <= 21) {
+
+                    /////////////////////////////////////////////////////////////////////////////
+                    if (uncoveredCard.getValue() == 1 || uncoveredCard.getValue() == 10) {
+                        if (extraCards == 0) {
+                            this.amount = 1000;
+                        }
+                        if (total >= 17) {
+                            exit = 1;
+                            return total;
+                        }
+                        if (aces > 0) {
+                            if ((total + 10) >= 17 && (total + 10) <= 21) {
+                                exit = 1;
+                                return total + 10;
+                            }
+                        }
+                    } else {
+                        if (uncoveredCard.getValue() >= 2 && uncoveredCard.getValue() <= 5) {
+                            if (extraCards == 0) {
+                                this.amount = 3000;
+                            }
+                        }
+                        if (total >= 16) {
                             exit = 1;
 
-                            return total + 10;
+                            return total;
+                        }
+                        if (aces > 0) {
+                            if ((total + 10) >= 16 && (total + 10) <= 21) {
+                                exit = 1;
+
+                                return total + 10;
+                            }
                         }
                     }
+                    ////////////////////////////////////////////////////////////////////////////////////////
+
                     player.getHand().add(deck.getCard());
                     extraCards++;
                 }
 
                 break;
             case 2:
+                uncoveredCard = player2.getHand().get(1);
                 aces = 0;
                 exit = 0;
                 total = 0;
                 extraCards = 0;
+                int count = 11;
+                if (countEnable == 1) {
+                    count = countCards(deck.getDeckYard());
+                }
                 while (exit == 0) {
+                    aces = 0;
                     for (int i = 0; i < player.getHand().size(); i++) {
                         Card card = player.getHand().get(i);
                         if (card.getValue() == 1) {
@@ -309,24 +361,65 @@ public class Logic implements Runnable {
                     total = Card.sumaCartas(player.getHand());
                     if (extraCards == 0 && (total + 10) == 21 && aces > 0) {
                         bj = 1;
+                        return 21;
                     }
-                    if (total >= 15) {
-                        exit = 1;
 
-                        return total;
-                    }
-                    if (aces > 0) {
-                        if ((total + 10) >= 15 && (total + 10) <= 21) {
+
+                    /////////////////////////////////////////////////////////////////////////////
+                    if (uncoveredCard.getValue() == 1 || uncoveredCard.getValue() == 10) {
+                        int value = 16;
+                        if (count < -2) {
+                            value = 17;
+                        } else {
+                            if (extraCards == 0) {
+                                this.amount = 1000;
+                            }
+                        }
+
+
+
+                        if (total >= value) {
+                            exit = 1;
+                            return total;
+                        }
+                        if (aces > 0) {
+                            if ((total + 10) >= value && (total + 10) <= 21) {
+                                exit = 1;
+                                return total + 10;
+                            }
+                        }
+                    } else {
+                        if (uncoveredCard.getValue() >= 2 && uncoveredCard.getValue() <= 5) {
+                            if (count < -2) {
+                                if (extraCards == 0) {
+                                    this.amount = 3000;
+                                }
+                            }
+                        }
+
+                        int value = 16;
+                        if (count < -2) {
+                            value = 17;
+                        }
+
+                        if (total >= value) {
                             exit = 1;
 
-                            return total + 10;
+                            return total;
+                        }
+                        if (aces > 0) {
+                            if ((total + 10) >= value && (total + 10) <= 21) {
+                                exit = 1;
+
+                                return total + 10;
+                            }
                         }
                     }
+                    ////////////////////////////////////////////////////////////////////////////////////////
+
                     player.getHand().add(deck.getCard());
                     extraCards++;
                 }
-
-
                 break;
         }
         return 0;
@@ -585,5 +678,25 @@ public class Logic implements Runnable {
         chartPanel.setVisible(true);
         pj.setGraphPanel33(chartPanel);
 
+    }
+
+    /**
+     * Cuenta las cartas en un arreglo de cartas para un sistema de conteo de
+     * cartas
+     *
+     * @param deck el arreglo de cartas para llevar la cuenta
+     * @return la cuenta de las cartas segun el sistema de conteo
+     */
+    public int countCards(ArrayList<Card> deck) {
+        int count = 0;
+        for (int i = 0; i < deck.size(); i++) {
+            if (deck.get(i).getValue() >= 2 && deck.get(i).getValue() <= 6) {
+                count++;
+            }
+            if (deck.get(i).getValue() == 10 || deck.get(i).getValue() == 6) {
+                count--;
+            }
+        }
+        return count / 2;
     }
 }
